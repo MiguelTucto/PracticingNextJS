@@ -1,31 +1,31 @@
-const SignInComponent = () => {
+const SignInComponent = ({ user, setUser, submitting, handleSubmit }) => {
     return (
         <>
             <section className="max-w-full  rounded shadow-md bg-yellow-200 grid grid-cols-2 divide-x">
                 <div className="max-w-screen-xl mx-auto p-6  ">
-                    <form className="space-y-6 flex flex-col justify-center mx-auto">
+                    <form onSubmit={handleSubmit} className="space-y-6 flex flex-col justify-center mx-auto">
                         <label className="block font-medium text-gray-900 text-xl">Correo</label>
                         <div className="flex ">
-                        <span className="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-r-0 border-gray-300 rounded-l-md">
-                            <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" >
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-                            </svg>
-                        </span>
-                            <input type="text" id="name" className="border-gray-300  flex-1 min-w-0 rounded-none rounded-r-lg  border text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " />
+                            <span className="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-r-0 border-gray-300 rounded-l-md">
+                                <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" >
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                                </svg>
+                            </span>
+                            <input value={user.email} onChange={(e) => setUser({...user, email: e.target.value })} type="text" id="name" className="border-gray-300  flex-1 min-w-0 rounded-none rounded-r-lg  border text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " />
                         </div>
                         <label className="block font-medium text-gray-900 text-xl">Contraseña</label>
                         <div className="flex ">
-                        <span className="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-r-0 border-gray-300 rounded-l-md">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 text-gray-500 dark:text-gray-400">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z" />
-                            </svg>
-                        </span>
-                            <input type="text" id="name" className="border-gray-300  flex-1 min-w-0 rounded-none rounded-r-lg  border text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " />
+                            <span className="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-r-0 border-gray-300 rounded-l-md">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 text-gray-500 dark:text-gray-400">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z" />
+                                </svg>
+                            </span>
+                            <input value={user.password} onChange={(e) => setUser({...user, password: e.target.value })} type="text" id="name" className="border-gray-300  flex-1 min-w-0 rounded-none rounded-r-lg  border text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " />
                         </div>
-                        <button type="button" className="w-auto mx-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        <button type="submit" disabled={submitting} className="w-auto mx-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                             Ingresar
                             <svg className="w-3.5 h-3.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
                             </svg>
                         </button>
                     </form>
