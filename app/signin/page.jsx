@@ -4,6 +4,8 @@ import SignInComponent from "@components/SignInComponent";
 import * as Yup from 'yup';
 import {useState} from "react";
 import {useFormik} from "formik";
+import {signIn} from "@node_modules/next-auth/react";
+import {router} from "@node_modules/next/dist/client";
 
 const SignIn = () => {
     const [user, setUser] = useState({});
@@ -33,6 +35,11 @@ const SignIn = () => {
         console.log("register user works: ", user);
     }
 
+    const handleClickGoogle = async () => {
+       await signIn('google', {callbackUrl: "http://localhost:3000"});
+       await router.push("/");
+    }
+
     return (
         <>
             <SignInComponent
@@ -40,6 +47,7 @@ const SignIn = () => {
                 setUser={setUser}
                 submitting={submitting}
                 handleSubmit={handleSubmit}
+                handleClickGoogle={handleClickGoogle}
                 formik={formik}
             />
         </>

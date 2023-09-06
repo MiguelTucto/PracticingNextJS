@@ -1,6 +1,8 @@
 import Link from "next/link";
+import { useSession } from "@node_modules/next-auth/react";
 
 const Home = () => {
+
     return (
         <>
             <section className=" flex flex-col justify-items-center items-center">

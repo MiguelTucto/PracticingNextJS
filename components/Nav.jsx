@@ -2,9 +2,16 @@
 
 import Link from "next/link";
 import {useState} from "react";
+import {useSession, signOut, getProviders} from "next-auth/react";
+import Image from "next/image";
 
 const Nav = () => {
-    const [session, setSession] = useState(false);
+    const { data: session } = useSession();
+    const logOut = () => {
+        console.log("sign out works!");
+        signOut();
+
+    }
     return (
         <>
             <nav className="w-full flex justify-between my-7 ">
@@ -21,9 +28,10 @@ const Nav = () => {
                                 <Link href="/">
                                     Contratar
                                 </Link>
-                                <Link href="/">
-                                    Log Out
-                                </Link>
+                                <span>Welcome { session.user.name }</span>
+
+                                <button type="button" onClick={logOut}>Sign Out</button>
+
                             </div>
                         </>
                     ) : (
