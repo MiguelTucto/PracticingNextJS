@@ -1,17 +1,33 @@
 "use client";
 
 import Link from "next/link";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useSession, signOut, getProviders} from "next-auth/react";
 import Image from "next/image";
 
 const Nav = () => {
     const { data: session } = useSession();
+    const [providers, setProviders] = useState(null);
     const logOut = () => {
         console.log("sign out works!");
         signOut();
 
     }
+
+    const getProviderMethod = async () => {
+        const res = await getProviders();
+        setProviders(res);
+        console.log("Providers: ", res);
+        Object.values(res).map((provider) => {
+            console.log(provider.id, provider.name);
+        })
+
+    }
+
+    useEffect(() => {
+        getProviderMethod();
+    }, []);
+
     return (
         <>
             <nav className="w-full flex justify-between my-7 ">

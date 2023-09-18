@@ -36,7 +36,7 @@ const SignIn = () => {
     }
 
     const handleClickGoogle = async () => {
-       await signIn('google', {callbackUrl: "http://localhost:3000"});
+       await signIn('google');
        await router.push("/");
     }
 
