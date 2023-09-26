@@ -3,10 +3,15 @@
 import SignUpForm from "@components/SignUpForm";
 import {useState} from "react";
 import {useFormik} from "formik";
+import axios from "axios";
 import * as Yup from 'yup';
+import {useRouter} from "next/navigation";
+import {error} from "@node_modules/next/dist/build/output/log";
+import {NextResponse} from "next/server";
 
 const SignUp = () => {
     const [submitting, setSubmitting] = useState(false);
+    const router = useRouter()
     const formik = useFormik({
         initialValues: {
             name: '',
@@ -32,23 +37,41 @@ const SignUp = () => {
             password: Yup.string()
                 .required('Campo Requerido'),
             confirmPassword: Yup.string()
-                .as
                 .required('Campo Requerido'),
         }),
-        onSubmit: values => {
+        onSubmit: async (values) => {
             console.log("user registered: ", values);
+
+            try {
+                setSubmitting(true);
+                const registeredNewUser = {
+                    name: values.name,
+                    phone: values.phone,
+                    location: values.location,
+                    email: values.email,
+                    password: values.password
+                }
+
+                const response = await axios.post("api/auth/signup", registeredNewUser);
+
+                console.log("Signup success: ", response.data);
+                console.log("User added is: ", registeredNewUser);
+
+            } catch (e) {
+                console.log("Signup failed: ", e.message);
+
+            } finally {
+                setSubmitting(false);
+                router.push("/");
+            }
         }
     })
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        console.log('user registered v2: ');
-    }
 
     return (
         <>
             <SignUpForm
                 formik={formik}
+                submitting={submitting}
             />
         </>
     )

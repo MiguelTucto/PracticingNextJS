@@ -1,7 +1,8 @@
-const SignUpForm = ({ formik }) => {
+const SignUpForm = ({ formik, submitting }) => {
     return (
         <>
             <section className=" flex-col justify-items-center items-center  ">
+                <h1>{ submitting ? "Processing" : "Signup"}</h1>
                 <form onSubmit={formik.handleSubmit} className="mt-10  flex flex-col gap-4 glassmorphism">
                     <label htmlFor="name" className="block font-medium text-gray-900 text-xl">Nombre Completo</label>
                     <div className="flex ">
