@@ -3,6 +3,9 @@ import GoogleProvider from 'next-auth/providers/google';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import User from "@models/user";
 import {connectToDB} from "@utils/database";
+import {NextResponse} from "next/server";
+import  { compare }  from 'bcryptjs';
+
 const handler = NextAuth({
     providers: [
         GoogleProvider({
@@ -11,7 +14,33 @@ const handler = NextAuth({
         }),
         CredentialsProvider({
             name: "Credentials",
-            async authorize() {
+            credentials: {
+                username: {
+                    label: "Username:",
+                    type: "text",
+                    placeholder: "your-cool-username"
+                },
+                password: {
+                    label: "Password:",
+                    type: "password",
+                    placeholder: "your-awesome-password"
+                }
+            },
+            async authorize(credentials) {
+                await connectToDB().catch(() => NextResponse.json({error: "Connection failed"}));
+
+                const result = await User.findOne({email: credentials?.email})
+                if (!result) {
+                    throw new Error("No user found with that email");
+                }
+
+                const checkPassword = await compare(credentials?.password, result.password)
+
+                if (!checkPassword || result.email !== credentials?.email) {
+                    throw new Error("Username or Password doesn't match");
+                }
+
+                return result;
 
             }
         })

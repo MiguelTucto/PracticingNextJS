@@ -2,14 +2,16 @@
 
 import SignInComponent from "@components/SignInComponent";
 import * as Yup from 'yup';
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useFormik} from "formik";
 import {signIn} from "@node_modules/next-auth/react";
 import {router} from "@node_modules/next/dist/client";
+import {getProviders} from "next-auth/react";
 
 const SignIn = () => {
     const [user, setUser] = useState({});
     const [submitting, setSubmitting] = useState(false);
+    const [providers, setProviders] = useState(null);
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -24,10 +26,30 @@ const SignIn = () => {
                 .max(50, 'Debe contener 50 caracteres o menos')
                 .required('Campo requerido'),
         }),
-        onSubmit: values => {
-            console.log("it works", values);
+        onSubmit: async (values) => {
+            const status = await signIn('credentials', {
+                redirect: false,
+                email: values.email,
+                password: values.password,
+                callbackUrl: "/"
+            })
+            console.log("it works?");
+            console.log(status);
         }
     })
+
+    const getAllProviders = async () => {
+        const response = await getProviders();
+        setProviders(response);
+        console.log("Providers: ", response);
+        Object.values(response).map((provider) => {
+            console.log(provider.id, provider.name);
+        })
+    }
+
+    useEffect(() => {
+        getAllProviders();
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -49,6 +71,7 @@ const SignIn = () => {
                 handleSubmit={handleSubmit}
                 handleClickGoogle={handleClickGoogle}
                 formik={formik}
+                providers={providers}
             />
         </>
     )
