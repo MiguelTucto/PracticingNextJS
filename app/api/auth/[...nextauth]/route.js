@@ -5,6 +5,7 @@ import User from "@models/user";
 import {connectToDB} from "@utils/database";
 import {NextResponse} from "next/server";
 import  { compare }  from 'bcryptjs';
+import {session} from "@node_modules/next-auth/core/routes";
 
 const handler = NextAuth({
     providers: [
@@ -15,8 +16,8 @@ const handler = NextAuth({
         CredentialsProvider({
             name: "Credentials",
             credentials: {
-                username: {
-                    label: "Username:",
+                email: {
+                    label: "Email:",
                     type: "text",
                     placeholder: "your-cool-username"
                 },
@@ -54,27 +55,47 @@ const handler = NextAuth({
 
             return session;
         },
-        async signIn({ profile }) {
+        async signIn({ profile , user}) {
             try {
                 await connectToDB();
+                if (profile !== undefined) {
+                    const userExists = await User.findOne({
+                        email: profile.email
+                    });
 
-                const userExists = await User.findOne({
-                    email: profile.email
-                });
+                    if (!userExists) {
+                        await User.create({
+                            name: profile.name,
+                            phone: profile.phone,
+                            location: profile.location,
+                            email: profile.email,
+                            password: profile.password
+                        })
+                    }
 
-                if (!userExists) {
-                    await User.create({
-                        name: profile.name,
-                        phone: profile.phone,
-                        location: profile.location,
-                        email: profile.email,
-                        password: profile.password
-                    })
+                    console.log("This is profile next auth: ", profile);
+
+                    return true;
+                } else {
+                    const userExists = await User.findOne({
+                        email: user.email
+                    });
+
+                    if (!userExists) {
+                        await User.create({
+                            name: user.name,
+                            phone: user.phone,
+                            location: user.location,
+                            email: user.email,
+                            password: user.password
+                        })
+                    }
+
+                    console.log("This is user next auth: ",user)
+
+                    return true;
                 }
 
-                console.log(profile);
-
-                return true;
             } catch (e) {
                 console.log("Error checking if user exists: ", e.message);
                 return false;

@@ -33,7 +33,6 @@ const SignIn = () => {
                 password: values.password,
                 callbackUrl: "/"
             })
-            console.log("it works?");
             console.log(status);
         }
     })
