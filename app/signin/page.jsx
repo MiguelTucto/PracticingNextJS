@@ -4,11 +4,13 @@ import SignInComponent from "@components/SignInComponent";
 import * as Yup from 'yup';
 import {useEffect, useState} from "react";
 import {useFormik} from "formik";
-import {signIn} from "@node_modules/next-auth/react";
-import {router} from "@node_modules/next/dist/client";
-import {getProviders} from "next-auth/react";
+import {signIn, useSession} from "@node_modules/next-auth/react";
 
+import {getProviders} from "next-auth/react";
+import {useRouter} from "@node_modules/next/dist/client/components/navigation";
 const SignIn = () => {
+    const { data: session } = useSession();
+    const router = useRouter();
     const [user, setUser] = useState({});
     const [submitting, setSubmitting] = useState(false);
     const [providers, setProviders] = useState(null);
@@ -61,17 +63,31 @@ const SignIn = () => {
        await router.push("/");
     }
 
+    const backToHome = () => {
+        router.push("/");
+    }
+
     return (
         <>
-            <SignInComponent
-                user={user}
-                setUser={setUser}
-                submitting={submitting}
-                handleSubmit={handleSubmit}
-                handleClickGoogle={handleClickGoogle}
-                formik={formik}
-                providers={providers}
-            />
+            {
+                session ? (
+                    <>
+                        <button onClick={backToHome}>You are already log in. Please click this button to enjoy our application</button>
+                    </>
+                ) : (
+                    <>
+                        <SignInComponent
+                            user={user}
+                            setUser={setUser}
+                            submitting={submitting}
+                            handleSubmit={handleSubmit}
+                            handleClickGoogle={handleClickGoogle}
+                            formik={formik}
+                            providers={providers}
+                        />
+                    </>
+                )
+            }
         </>
     )
 }

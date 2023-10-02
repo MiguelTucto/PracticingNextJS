@@ -37,17 +37,15 @@ const Nav = () => {
                 {
                     session ? (
                         <>
-                            <div>
-                                <Link href="/">
+                            <div className="flex gap-3">
+                                <Link href="/makeshow">
                                     Tus Reservas
                                 </Link>
-                                <Link href="/">
+                                <Link href="/showlist">
                                     Contratar
                                 </Link>
                                 <span>Welcome { session.user.name }</span>
-
                                 <button type="button" onClick={logOut}>Sign Out</button>
-
                             </div>
                         </>
                     ) : (
