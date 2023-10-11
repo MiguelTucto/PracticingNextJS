@@ -15,3 +15,29 @@ export const GET = async (request, { params }) => {
         return NextResponse.json({ status: 500, error: e.message });
     }
 }
+
+export const PUT = async ( request, { params }) => {
+    const { status, description, date, startTime, creditBalance } = await request.json();
+
+    try {
+        await connectToDB();
+
+        const existingShow = await Show.findById(params.id);
+
+        if (!existingShow) return NextResponse.json({ status: 500, error: "Show Not Found"});
+
+        existingShow.status = status;
+        existingShow.description = description;
+        existingShow.date = date;
+        existingShow.startTime = startTime;
+        existingShow.creditBalance = creditBalance;
+
+        await existingShow.save();
+
+        return NextResponse.json({ status: 200, data: existingShow });
+
+
+    } catch (e) {
+        return NextResponse.json({ status: 500, error: e.message });
+    }
+}

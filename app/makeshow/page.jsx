@@ -12,7 +12,6 @@ const MakeShow = () => {
          await axios.get("api/show")
              .then(response  => {
                  setShows(response.data.data);
-                 console.log("The shows are 1: ", response.data.data);
              })
              .catch(e => console.log("An error occurred retrieving All Shows", e));
     }
